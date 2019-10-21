@@ -15,9 +15,9 @@ impl Game {
 		Game{..Default::default()}
 	}
 	pub fn process(&mut self, s: String) {
-		use State;
+		use State::*;
 		match self.state {
-			Creation => (),
+			Creation => self.creation_process(),
 			_ => (),
 		}
 		info!("Pressed key: {}", s);
@@ -26,16 +26,30 @@ impl Game {
 		self.state
 	}
 	pub fn display(&self, out: &mut RawTerminal<io::Stdout>) -> Result<()> {
+		use State::*;
 		use std::io::Write;
 		write!(out, "{}{}", termion::clear::All, termion::cursor::Goto(1, 1))?;
 		match self.state {
-			Creation => (),
+			Creation => self.creation_display(out)?,
 			_ => (),
 		}
-		write!(out, "Menu");
 		out.lock().flush()?;
 		Ok(())
 	}
+}
+
+trait StateCreation {
+	fn creation_process(&mut self) {
+		
+	}
+	fn creation_display(&self, out: &mut RawTerminal<io::Stdout>) -> Result<()> {
+		use std::io::Write;
+		write!(out, "Displaying creation")?;
+		Ok(())
+	}
+}
+
+impl StateCreation for Game {
 }
 
 impl Default for Game {

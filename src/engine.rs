@@ -73,7 +73,7 @@ impl Engine {
 		Ok(())
 	}
 	pub fn output(&mut self) -> Result<()> {
-		self.game.display(&mut self.stdout);
+		self.game.display(&mut self.stdout)?;
 		Ok(())
 	}
 	pub fn active(&self) -> bool {
