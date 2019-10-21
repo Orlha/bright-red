@@ -3,6 +3,8 @@
 #![allow(unused_imports)]
 // Externals
 extern crate termion;
+extern crate log;
+extern crate simplelog;
 // Modules
 mod engine;
 mod game;

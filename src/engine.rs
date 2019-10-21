@@ -12,16 +12,27 @@ use termion::raw::RawTerminal;
 use termion::AsyncReader;
 
 use crate::ext::Result;
+use crate::game::*;
+use log::{info, warn};
+
+use simplelog::WriteLogger;
+use simplelog::LevelFilter;
+use simplelog::Config;
+use std::fs::File;
+use std::boxed::Box;
 
 pub struct Engine {
 	stdout: RawTerminal<io::Stdout>,
 	stdin: termion::input::Keys<termion::AsyncReader>,
 	cmd: termion::event::Key,
 	on: bool,
+	game: Game,
+	//log: std::boxed::Box<WriteLogger<std::fs::File>>,
 }
 
 impl Engine {
 	pub fn new() -> Engine {
+		let _ = WriteLogger::init(LevelFilter::Info, Config::default(), File::create("vamp.log").unwrap());
 		Engine{..Default::default()}
 	}
 	pub fn read_cmd(&mut self) -> Result<()> {
@@ -36,26 +47,33 @@ impl Engine {
 		}
 	}
 	pub fn process(&mut self) -> Result<()> {
+		use termion::event::Key;
+		use std::fmt::Write;
 		match self.cmd {
-			termion::event::Key::Char('q') => self.on = false,
-			termion::event::Key::Esc => self.on = false,
+			Key::Null => (),
+			Key::Char('q') => self.on = false,
+			Key::Esc => self.on = false,
 			_ => {
-				();
+				let mut s = String::new();
+				write!(s, "{:?}", self.cmd)?;
 				/*
 				write!(
 					self.stdout,
-					"{}{}keypress: {:?}",
+					"{}{}keypress: {}",
 					termion::clear::All,
 					termion::cursor::Goto(1, 1),
-					self.cmd
+					s
 					)?;
 				self.stdout.lock().flush()?;
 				*/
+				self.game.process(s);
+				();
 			}
 		}
 		Ok(())
 	}
 	pub fn output(&mut self) -> Result<()> {
+		self.game.display(&mut self.stdout);
 		Ok(())
 	}
 	pub fn active(&self) -> bool {
@@ -70,6 +88,7 @@ impl Default for Engine {
 			stdin: termion::async_stdin().keys(),
 			cmd: termion::event::Key::Null,
 			on: true,
+			game: Default::default(),
 		}
 	}
 }

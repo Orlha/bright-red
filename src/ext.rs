@@ -10,8 +10,16 @@ pub const ENERGY_DROP: i64 = 1;
 pub const CMD_SIZE: usize = 4;
 pub const DIR_SIZE: usize = 4;
 
+#[derive(Copy, Clone)]
 pub enum State {
 	Creation,
+}
+
+#[derive(Copy, Clone)]
+pub enum Class {
+	Vampire,
+	Class2,
+	Class3,
 }
 
 pub enum Action {
