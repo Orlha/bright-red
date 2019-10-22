@@ -16,6 +16,7 @@ pub enum State {
 	World,
 }
 
+#[derive(Debug)]
 #[derive(Copy, Clone)]
 pub enum Class {
 	Vampire,
@@ -30,6 +31,20 @@ pub enum Mind {
 	Dreary,
 	Hysteric,
 	Irredeemable,
+}
+
+#[derive(Debug)]
+#[derive(Copy, Clone)]
+pub enum Loc {
+	Home,
+	Bar,
+}
+
+#[derive(PartialEq)]
+#[derive(Eq, Hash)]
+#[derive(Copy, Clone)]
+pub enum Item {
+	Dagger,
 }
 
 pub enum Body {
