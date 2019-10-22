@@ -36,6 +36,8 @@ pub enum Mind {
 #[derive(Debug)]
 #[derive(Copy, Clone)]
 pub enum Loc {
+	Unknown,
+	Streets,
 	Home,
 	Bar,
 }

@@ -51,7 +51,7 @@ impl Engine {
 		use std::fmt::Write;
 		match self.cmd {
 			Key::Null => (),
-			Key::Char('q') => self.on = false,
+			Key::Char('q') | Key::Char('Q') => self.on = false,
 			Key::Esc => self.on = false,
 			_ => {
 				let mut s = String::new();
@@ -75,7 +75,7 @@ impl Engine {
 	}
 	pub fn output(&mut self) -> Result<()> {
 		self.game.display(&mut self.stdout)?;
-		write!(self.stdout, "{}", termion::cursor::Show);
+		write!(self.stdout, "{}", termion::cursor::Show)?;
 		Ok(())
 	}
 	pub fn active(&self) -> bool {

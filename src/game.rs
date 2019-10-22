@@ -25,7 +25,6 @@ impl Game {
 		match self.state {
 			Creation => self.creation_process(key),
 			World => self.world_process(key),
-			_ => (),
 		}
 		info!("Pressed key: {:?}", key);
 	}
@@ -39,7 +38,6 @@ impl Game {
 		match self.state {
 			Creation => self.creation_display(out)?,
 			World => self.world_display(out)?,
-			_ => (),
 		}
 		out.lock().flush()?;
 		Ok(())
@@ -54,6 +52,8 @@ impl StateCreation for Game {
 				info!("Selected class: Vampire");
 				self.class = Class::Vampire;
 				self.state = State::World;
+				self.money = 1000;
+				self.loc = Loc::Unknown;
 			}
 			Key::Char('P') | Key::Char('p') => {
 				info!("Selected class: Planebender");
@@ -152,14 +152,31 @@ impl StateWorld for Game {
 		for n in 0..20 {
 			write!(out, "{}{:>69}{}", "║", "║", Goto(x, y + 3 + n))?;
 		}
+
+		write!(out, "{}═════════════════╩", Goto(1, y + 3 + 19))?;
+		//════════════════════════════════════════════════════════════════════
+		// ╩═╩
 		Ok(())
 	}
-	fn world_process(&mut self, key: termion::event::Key) {
+	fn draw_text(&self, out: &mut RawTerminal<io::Stdout>, x: u16, y: u16) -> Result<()> {
+		use std::io::Write;
+		use termion::cursor::Down;
+		use termion::cursor::Left;
+		use termion::cursor::Goto;
+		write!(out, "{}", Goto(x, y))?;
+		write!(out, "{}{}", ARR[0], Goto(x, y + 1))?;
+		write!(out, "{}{}", ARR[1], Goto(x, y + 2))?;
+		Ok(())
+	}
+	fn world_process(&mut self, _key: termion::event::Key) {
+		//
+		//
 	}
 	fn world_display(&self, out: &mut RawTerminal<io::Stdout>) -> Result<()> {
-		self.draw_mind(out, 1, 1);
-		self.draw_inv(out, 90, 1);
-		self.draw_status(out, 18, 1);
+		self.draw_mind(out, 1, 1)?;
+		self.draw_inv(out, 90, 1)?;
+		self.draw_status(out, 18, 1)?;
+		self.draw_text(out, 20, 3)?;
 		use std::io::Write;
 		write!(out, "{}", termion::cursor::Goto(1, 30))?;
 		Ok(())
@@ -174,6 +191,7 @@ trait StateWorld {
 	fn draw_mind(&self, out: &mut RawTerminal<io::Stdout>, x: u16, y: u16) -> Result<()>;
 	fn draw_inv(&self, out: &mut RawTerminal<io::Stdout>, x: u16, y: u16) -> Result<()>;
 	fn draw_status(&self, out: &mut RawTerminal<io::Stdout>, x: u16, y: u16) -> Result<()>;
+	fn draw_text(&self, out: &mut RawTerminal<io::Stdout>, x: u16, y: u16) -> Result<()>;
 	fn world_process(&mut self, key: termion::event::Key);
 	fn world_display(&self, out: &mut RawTerminal<io::Stdout>) -> Result<()>;
 }
@@ -186,7 +204,7 @@ impl Default for Game {
 			mind: Mind::Stable,
 			money: 0,
 			items: HashSet::new(),
-			loc: Loc::Home,
+			loc: Loc::Unknown,
 		}
 	}
 }
