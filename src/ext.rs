@@ -13,13 +13,27 @@ pub const DIR_SIZE: usize = 4;
 #[derive(Copy, Clone)]
 pub enum State {
 	Creation,
+	World,
 }
 
 #[derive(Copy, Clone)]
 pub enum Class {
 	Vampire,
-	Class2,
-	Class3,
+	Planebender,
+	Bartender,
+}
+
+#[derive(Copy, Clone)]
+pub enum Mind {
+	Strong,
+	Stable,
+	Dreary,
+	Hysteric,
+	Irredeemable,
+}
+
+pub enum Body {
+	Rested,
 }
 
 pub enum Action {

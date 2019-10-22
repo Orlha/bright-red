@@ -9,6 +9,7 @@ extern crate simplelog;
 mod engine;
 mod game;
 mod ext;
+mod strings;
 /*
 mod cmdr;
 mod game;

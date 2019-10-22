@@ -66,7 +66,8 @@ impl Engine {
 					)?;
 				self.stdout.lock().flush()?;
 				*/
-				self.game.process(s);
+				//self.game.process(s);
+				self.game.process(self.cmd);
 				();
 			}
 		}
@@ -74,6 +75,7 @@ impl Engine {
 	}
 	pub fn output(&mut self) -> Result<()> {
 		self.game.display(&mut self.stdout)?;
+		write!(self.stdout, "{}", termion::cursor::Show);
 		Ok(())
 	}
 	pub fn active(&self) -> bool {
