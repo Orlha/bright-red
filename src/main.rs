@@ -38,6 +38,13 @@ fn run() -> Result<()> {
 }
 
 fn main() {
+	use termion::raw::IntoRawMode;
+	use termion::event::*;
+	use termion::*;
+	use termion::event::MouseEvent;
+	use termion::input::*;
+	use std::io::{self, Write};
+	use termion::cursor;
 	println!("[Started];");
 	let argv = &env::args();
 	println!("{:?}", argv);
@@ -45,50 +52,28 @@ fn main() {
 		Ok(()) => println!("\rFinished successfully;"),
 		Err(t) => println!("\rFinished with error: {}", t),
 	}
+
+	/*
+	let stdin = std::io::stdin();
+	let mut stdout = termion::input::MouseTerminal::from(std::io::stdout().into_raw_mode().unwrap());
+	for c in stdin.events().next() {
+		let evt = c.unwrap();
+		match evt {
+			Event::Key(Key::Char('q')) => break,
+			Event::Mouse(me) => {
+				match me {
+					MouseEvent::Press(_, a, b) |
+						MouseEvent::Release(a, b) |
+						MouseEvent::Hold(a, b) => {
+							//write!(stdout, "{}", cursor::Goto(a, b)).unwrap();
+							write!(stdout, "Clicked on {}:{}\r\n", a, b);
+						}
+				}
+			}
+			_ => {}
+		}
+		stdout.flush().unwrap();
+	}
+	*/
 	println!("[Exited];");
 }
-
-/*
-use std::io;
-use std::io::Write;
-use std::thread;
-use std::time;
-
-use termion::input::TermRead;
-use termion::raw::IntoRawMode;
-
-fn main() {
-    // Set terminal to raw mode to allow reading stdin one key at a time
-    let mut stdout = io::stdout().into_raw_mode().unwrap();
-
-    // Use asynchronous stdin
-    let mut stdin = termion::async_stdin().keys();
-
-    loop {
-        // Read input (if any)
-        let input = stdin.next();
-
-        // If a key was pressed
-        if let Some(Ok(key)) = input {
-            match key {
-                // Exit if 'q' is pressed
-                termion::event::Key::Char('q') => break,
-                // Else print the pressed key
-                _ => {
-                    write!(
-                        stdout,
-                        "{}{}Key pressed: {:?}",
-                        termion::clear::All,
-                        termion::cursor::Goto(1, 1),
-                        key
-                    )
-                    .unwrap();
-
-                    stdout.lock().flush().unwrap();
-                }
-            }
-        }
-        thread::sleep(time::Duration::from_millis(50));
-    }
-}
-*/
