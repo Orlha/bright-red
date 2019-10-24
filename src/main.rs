@@ -10,6 +10,7 @@ mod engine;
 mod game;
 mod ext;
 mod strings;
+mod case;
 /*
 mod cmdr;
 mod game;

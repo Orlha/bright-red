@@ -34,6 +34,8 @@ pub enum Mind {
 }
 
 #[derive(Debug)]
+#[derive(PartialEq)]
+#[derive(Eq, Hash)]
 #[derive(Copy, Clone)]
 pub enum Loc {
 	Unknown,

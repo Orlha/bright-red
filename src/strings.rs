@@ -12,3 +12,27 @@ pub const ARR:[&'static str; 2] = [
 	"qwe",
 	"asd"
 ];
+pub const BAR:[&'static str; 2] = [
+	"Bar Entrance 1",
+	"Bar Entrance 2"
+];
+pub const BAR_01_OPT:[&'static str; 2] = [
+	"qwe",
+	"qwe"
+];
+pub const UNKNOWN:[&'static str; 2] = [
+	"qwe",
+	"asd"
+];
+pub const UNK_01_OPT:[&'static str; 2] = [
+	"Wait",
+	"Do nothing"
+];
+pub const STREETS:[&'static str; 2] = [
+	"qwe",
+	"asd"
+];
+pub const HOME:[&'static str; 2] = [
+	"qwe",
+	"asd"
+];
